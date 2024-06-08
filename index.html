@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fuel Calculator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Fuel Calculator</h1>
+        <form id="fuel-form">
+            <div>
+                <label for="start">Starting Location:</label>
+                <input type="text" id="start" readonly placeholder="Getting your location..."> 
+            </div>
+            <div>
+                <label for="destination">Destination:</label>
+                <input type="text" id="destination" placeholder="Enter your destination"> 
+            </div>
+            <button type="submit">Calculate</button>
+        </form>
+
+        <div id="results">
+            <div id="map" style="height: 300px; width: 100%;"></div>
+            <p id="fuel-estimate">Fuel Estimate: </p>
+        </div>
+    </div>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap" async defer></script>
+    <script src="script.js"></script>
+</body>
+</html>
