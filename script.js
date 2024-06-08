@@ -14,25 +14,33 @@ function initMap() {
     const autocomplete = new google.maps.places.Autocomplete(destinationInput);
 
     // Get user location
-    navigator.geolocation.getCurrentPosition(function(position) {
-        const start = { lat: position.coords.latitude, lng: position.coords.longitude };
-        document.getElementById('start').value = `${start.lat}, ${start.lng}`; // Display location
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            function(position) {
+                const start = { lat: position.coords.latitude, lng: position.coords.longitude };
+                document.getElementById('start').value = `${start.lat}, ${start.lng}`; // Display location
 
-        const fuelForm = document.getElementById('fuel-form');
-        fuelForm.addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form submission
+                const fuelForm = document.getElementById('fuel-form');
+                fuelForm.addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent form submission
 
-            const destination = destinationInput.value;
+                    const destination = destinationInput.value;
 
-            // Calculate route and fuel estimate
-            calculateFuel(start, destination, directionsService, directionsRenderer);
-        });
-    }, function(error) {
-        // Handle geolocation errors
-        console.error("Error getting location:", error);
-        document.getElementById('start').value = "Location Not Found";
-        alert("Error getting your location. Please check your browser settings.");
-    });
+                    // Calculate route and fuel estimate
+                    calculateFuel(start, destination, directionsService, directionsRenderer);
+                });
+            },
+            function(error) {
+                // Handle geolocation errors
+                console.error("Error getting location:", error);
+                document.getElementById('start').value = "Location Not Found";
+                alert("Error getting your location. Please check your browser settings.");
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+        document.getElementById('start').value = "Location Not Supported";
+    }
 }
 
 // Function to calculate fuel estimate
@@ -48,8 +56,7 @@ function calculateFuel(start, destination, directionsService, directionsRenderer
             const distance = response.routes[0].legs[0].distance.value; // Distance in meters
             directionsRenderer.setDirections(response); // Display route
 
-            // **Fuel Consumption Calculation (based on your car's figures)**
-            // Example: Your car's details
+            // Fuel Consumption Calculation (based on your car's figures)
             const cityConsumption = 42.2; // mpg
             const highwayConsumption = 65.7; // mpg
             const combinedConsumption = 54.3; // mpg
